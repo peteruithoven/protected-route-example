@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute.js";
+import './App.css';
 
 const App = () => {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -8,18 +9,18 @@ const App = () => {
   return (
     <Router>
       <div>
-        <ul>
+        <ul class="menu">
           <li>
-            <Link to="/public">Public</Link>
+            <NavLink to="/public">Public</NavLink>
           </li>
           <li>
-            <Link to="/protected">Protected</Link>
+            <NavLink to="/protected">Protected</NavLink>
           </li>
           <li>
-            <Link to="/admin/1">Admin 1</Link>
+            <NavLink to="/admin/1">Admin 1</NavLink>
           </li>
           <li>
-            <Link to="/admin/2">Admin 2</Link>
+            <NavLink to="/admin/2">Admin 2</NavLink>
           </li>
           {isAuthenticated ? (
             <li>
@@ -27,7 +28,7 @@ const App = () => {
             </li>
           ) : (
             <li>
-              <Link to="/login">Login</Link>
+              <NavLink to="/login">Login</NavLink>
             </li>
           )}
         </ul>

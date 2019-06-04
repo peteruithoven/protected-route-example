@@ -1,0 +1,14 @@
+body {
+    margin: 10px;
+}
+.menu {
+    list-style: none;
+    padding: 0;
+}
+.menu li {
+    display: inline;
+    margin-right: 10px;
+}
+.active {
+    font-weight: bold;
+}
