@@ -1,75 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute.js";
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = { isAuthenticated: false };
-  }
-  signin = () => {
-    this.setState({ isAuthenticated: true });
-  };
-  signout = () => {
-    this.setState({ isAuthenticated: false });
-  };
-  render() {
-    const { isAuthenticated } = this.state;
-    return (
-      <Router>
-        <div>
-          <ul>
+const App = () => {
+  const [isAuthenticated, setAuthenticated] = useState(false);
+
+  return (
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to="/public">Public</Link>
+          </li>
+          <li>
+            <Link to="/protected">Protected</Link>
+          </li>
+          <li>
+            <Link to="/admin/1">Admin 1</Link>
+          </li>
+          <li>
+            <Link to="/admin/2">Admin 2</Link>
+          </li>
+          {isAuthenticated ? (
             <li>
-              <Link to="/public">Public</Link>
+              <button onClick={() => setAuthenticated(false)}>Logout</button>
             </li>
+          ) : (
             <li>
-              <Link to="/protected">Protected</Link>
+              <Link to="/login">Login</Link>
             </li>
-            <li>
-              <Link to="/admin/1">Admin 1</Link>
-            </li>
-            <li>
-              <Link to="/admin/2">Admin 2</Link>
-            </li>
-            {isAuthenticated ? (
-              <li>
-                <button onClick={this.signout}>Logout</button>
-              </li>
-            ) : (
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-            )}
-          </ul>
-          <Route path="/public" component={Public} />
-          <ProtectedRoute
-            path="/login"
-            render={props => <Login signin={this.signin} {...props} />}
-            isAuthenticated={!isAuthenticated}
-            redirectTo="/"
-            useFrom
-          />
-          <ProtectedRoute
-            path="/protected"
-            component={Protected}
-            isAuthenticated={isAuthenticated}
-            redirectTo="/login"
-          />
-          <ProtectedRoute
-            path="/admin"
-            isAuthenticated={isAuthenticated}
-            redirectTo="/login"
-          >
-            <>
-              <Route path="/admin/1" render={() => <h3>Admin page 1</h3>} />
-              <Route path="/admin/2" render={() => <h3>Admin page 2</h3>} />
-            </>
-          </ProtectedRoute>
-        </div>
-      </Router>
-    );
-  }
-}
+          )}
+        </ul>
+        <Route path="/public" component={Public} />
+        <ProtectedRoute
+          path="/login"
+          render={props => <Login signin={() => setAuthenticated(true)} {...props} />}
+          isAuthenticated={!isAuthenticated}
+          redirectTo="/"
+          useFrom
+        />
+        <ProtectedRoute
+          path="/protected"
+          component={Protected}
+          isAuthenticated={isAuthenticated}
+          redirectTo="/login"
+        />
+        <ProtectedRoute
+          path="/admin"
+          isAuthenticated={isAuthenticated}
+          redirectTo="/login"
+        >
+          <>
+            <Route path="/admin/1" render={() => <h3>Admin page 1</h3>} />
+            <Route path="/admin/2" render={() => <h3>Admin page 2</h3>} />
+          </>
+        </ProtectedRoute>
+      </div>
+    </Router>
+  );
+};
 
 function Public() {
   return <h3>Public page</h3>;
