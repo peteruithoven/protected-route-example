@@ -35,19 +35,19 @@ const App = () => {
         <ProtectedRoute
           path="/login"
           render={props => <Login signin={() => setAuthenticated(true)} {...props} />}
-          isAuthenticated={!isAuthenticated}
+          predicate={!isAuthenticated}
           redirectTo="/"
           useFrom
         />
         <ProtectedRoute
           path="/protected"
           component={Protected}
-          isAuthenticated={isAuthenticated}
+          predicate={isAuthenticated}
           redirectTo="/login"
         />
         <ProtectedRoute
           path="/admin"
-          isAuthenticated={isAuthenticated}
+          predicate={isAuthenticated}
           redirectTo="/login"
         >
           <>
